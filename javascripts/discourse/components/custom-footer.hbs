@@ -8,7 +8,15 @@
         <div class="blurb">
           {{this.blurb}}
         </div>
+        <div align="center">
+          <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+          <input type="hidden" name="cmd" value="_s-xclick">
+          <input type="hidden" name="hosted_button_id" value="J95MCLZMU9T9A">
+          <input type="image" src="/blog/wp-content/themes/lelan_v1.1/images/btn_donate.png" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+          </form>
+        </div>
       </div>
+      
       <div class="second-box">
         <PluginOutlet @name="easy-footer-second-box">
           <div class="links">
@@ -58,20 +66,9 @@
             </a>
           {{/each}}
         </div>
-
         <div class="social">
-          {{#each (theme-setting "social_links") as |link|}}
-            <a
-              class="social-link"
-              data-easyfooter-social-link={{dasherize link.text}}
-              title={{link.title}}
-              target={{link.target}}
-              href={{link.url}}
-            >
-              {{d-icon link.icon_name}}
-            </a>
-          {{/each}}
-        </div>
+          <a href="//lotuselan.net/terms-and-conditions#copy">&copy; Copyright 1999-2025</a>
+          </div>
       </div>
     </div>
   </div>

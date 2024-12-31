@@ -89,19 +89,19 @@ RSpec.describe "Footer", system: true do
       expect(page).to have_link("About", href: "#")
     end
 
-    within(".below-footer-outlet .social") do
-      expect(page).to have_css(
-        "a.social-link[data-easyfooter-social-link='facebook'][title='Join us on Facebook'][href='#'][target='_blank'] .d-icon-fab-facebook",
-      )
-
-      expect(page).to have_css(
-        "a.social-link[data-easyfooter-social-link='twitter'][title='Show some love on Twitter'][href='#'][target='_blank'] .d-icon-fab-twitter",
-      )
-
-      expect(page).to have_css(
-        "a.social-link[data-easyfooter-social-link='youtube'][title='Check out our latest videos on Youtube'][href='#'][target='_blank'] .d-icon-fab-youtube",
-      )
-    end
+#    within(".below-footer-outlet .social") do
+#      expect(page).to have_css(
+#        "a.social-link[data-easyfooter-social-link='facebook'][title='Join us on Facebook'][href='#'][target='_blank'] .d-icon-fab-facebook",
+#      )
+#
+#      expect(page).to have_css(
+#        "a.social-link[data-easyfooter-social-link='twitter'][title='Show some love on Twitter'][href='#'][target='_blank'] .d-icon-fab-twitter",
+#      )
+#
+#      expect(page).to have_css(
+#        "a.social-link[data-easyfooter-social-link='youtube'][title='Check out our latest videos on Youtube'][href='#'][target='_blank'] .d-icon-fab-youtube",
+#      )
+#    end
   end
 
   it "should display the footer to anon users when `show_footer_on_login_required_page` is true" do
