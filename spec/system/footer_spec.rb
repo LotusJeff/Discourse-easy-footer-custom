@@ -89,19 +89,19 @@ RSpec.describe "Footer", system: true do
       expect(page).to have_link("About", href: "#")
     end
 
-#    within(".below-footer-outlet .social") do
-#      expect(page).to have_css(
-#        "a.social-link[data-easyfooter-social-link='facebook'][title='Join us on Facebook'][href='#'][target='_blank'] .d-icon-fab-facebook",
-#      )
-#
-#      expect(page).to have_css(
-#        "a.social-link[data-easyfooter-social-link='twitter'][title='Show some love on Twitter'][href='#'][target='_blank'] .d-icon-fab-twitter",
-#      )
-#
-#      expect(page).to have_css(
-#        "a.social-link[data-easyfooter-social-link='youtube'][title='Check out our latest videos on Youtube'][href='#'][target='_blank'] .d-icon-fab-youtube",
-#      )
-#    end
+    within(".below-footer-outlet .social") do
+      expect(page).to have_css(
+        "a.social-link[data-easyfooter-social-link='facebook'][title='Join us on Facebook'][href='#'][target='_blank'] .d-icon-fab-facebook",
+      )
+
+      expect(page).to have_css(
+        "a.social-link[data-easyfooter-social-link='twitter'][title='Show some love on Twitter'][href='#'][target='_blank'] .d-icon-fab-twitter",
+      )
+
+      expect(page).to have_css(
+        "a.social-link[data-easyfooter-social-link='youtube'][title='Check out our latest videos on Youtube'][href='#'][target='_blank'] .d-icon-fab-youtube",
+      )
+    end
   end
 
   it "should display the footer to anon users when `show_footer_on_login_required_page` is true" do
@@ -112,17 +112,64 @@ RSpec.describe "Footer", system: true do
 
     visit("/")
 
-    expect(page).to have_css(".below-footer-outlet.custom-footer")
+    expect(page).to have_css(".below-footer-outlet.custom-footer .wrap")
   end
 
   it "should not display the footer to anon users when `show_footer_on_login_required_page` is false" do
     SiteSetting.login_required = true
 
     theme.update_setting(:show_footer_on_login_required_page, false)
+    theme.update_setting(
+      :sections,
+      [
+        {
+          text: "Section 1",
+          title: "Section 1 title",
+          links: [
+            {
+              text: "Section 1 Link",
+              url: "http://some.url.com/section1/link1",
+              title: "Section 1 Link Title",
+              referrer_policy: "origin",
+            },
+          ],
+        },
+      ],
+    )
     theme.save!
 
     visit("/")
 
-    expect(page).not_to have_css(".below-footer-outlet.custom-footer")
+    expect(page).to have_no_css(".below-footer-outlet.custom-footer .wrap")
+  end
+
+  it "should apply css_class to small links when specified" do
+    theme.update_setting(
+      :small_links,
+      [
+        { text: "Privacy", url: "#", target: "_blank" },
+        {
+          text: "Terms",
+          url: "https://example.com/terms",
+          target: "_blank",
+          css_class: "custom-class",
+        },
+      ],
+    )
+    theme.save!
+
+    visit("/")
+
+    within(".below-footer-outlet .footer-links") do
+      # Privacy link should only have the default small-link class
+      expect(page).to have_css("a.small-link[href='#'][target='_blank']", text: "Privacy")
+      expect(page).to have_no_css("a.small-link.custom-class", text: "Privacy")
+
+      # Terms link should have both small-link and custom-class classes
+      expect(page).to have_css(
+        "a.small-link.custom-class[href='https://example.com/terms'][target='_blank']",
+        text: "Terms",
+      )
+    end
   end
 end
